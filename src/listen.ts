@@ -3,6 +3,8 @@ import speech from "@google-cloud/speech"
 // @ts-ignore
 import * as recorder from 'node-record-lpcm16';
 
+let finalTranscript = "";
+
 export default function listen() {
   const client = new speech.SpeechClient({
     keyFilename: './htnproject-fa322c7140ed.json'
@@ -21,8 +23,17 @@ export default function listen() {
     })
     .on('error', console.error)
     .on('data', (data) => {
-      console.log(`Real time transcript: ${data.results[0]?.alternatives?.[0]?.transcript} [isFinal: ${data.results[0]?.isFinal}]`);
-      if (data.results[0]?.isFinal) console.log("END")
+      console.log(`Real time transcript : ${data.results[0]?.alternatives?.[0]?.transcript} [isFinal: ${data.results[0]?.isFinal}]`);
+
+      if (data.results[0]?.isFinal) {
+        // Save the final sentence to the variable
+        finalTranscript = data.results[0]?.alternatives?.[0]?.transcript
+        console.log(`Final transcript: ${finalTranscript}`);
+        
+        // End the recognize stream when final transcript is received
+
+        recognizeStream.end();
+      }
     });
 
   // Create a writable stream to save the captured audio
@@ -37,8 +48,16 @@ export default function listen() {
   });
 
   audioStream.pipe(recognizeStream);
+
+  recognizeStream.on('end', () => {
+    console.log("END OF STREAM")
+  })
+
+  return finalTranscript;
 }
 
+
 if (require.main === module) {
-  listen()
+  console.log(listen())
+  console.log("HEREEE")
 }
