@@ -1,9 +1,26 @@
 {
   "dependencies": {
+    "@google-cloud/speech": "^6.7.0",
     "cohere": "^1.1.1",
-    "cohere-ai": "^7.13.1"
+    "cohere-ai": "^7.13.1",
+    "node-record-lpcm16": "^1.0.1"
   },
   "devDependencies": {
-    "@types/node": "^22.5.5"
-  }
+    "@types/node": "^22.5.5",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  },
+  "name": "wakey",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "ts-node src/index.ts",
+    "build": "rimraf ./build && tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
