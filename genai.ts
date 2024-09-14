@@ -36,7 +36,7 @@ Based on the following 3 most recent messages from the user, are they fully awak
 "${chatHistory[chatHistory.length - 5].message}"
 `
 
-const COHERE_API_KEY = "NJCadsNhw5NqI0Lk6OCZDWGLMZZR8gEUVzn6ioUU"
+const COHERE_API_KEY = "COHERE-API-KEY-HERE"
 export default async function generateResponse(topic: string, msg: string, chatHistory: ChatMessage[]) {
     const cohere = new CohereClient({
         token: COHERE_API_KEY,
