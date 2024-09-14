@@ -8,9 +8,10 @@ import * as readline from 'readline';
 // save user data in a dataset, then somehow use that to make the process better
 // if there's any "how to wake up" data or research papers written, input it as RAG/context
 // maybe add your schedule and it gives you a rundown
+// add your interests and it will save it in the documents
 
 
-type ChatMessage = Message.Chatbot | Message.System | Message.User
+export type ChatMessage = Message.Chatbot | Message.System | Message.User
 
 
 const chat_preamble = (topic: string) => `
@@ -22,7 +23,7 @@ you were having an audio conversation. Keep your language natural.
 `
 
 
-const ready_preamble = (topic: string) => `
+const ready_preamble = () => `
 You are a system that analyzes whether a user is fully awake in the morning, or if they they are still sleepy.
 Look at the user's most recent messages and if the most of them sound more awake than sleepy, respond with the string: "TRUE".
 If they don't, respond with the string "FALSE".
@@ -36,7 +37,7 @@ Based on the following 3 most recent messages from the user, are they fully awak
 "${chatHistory[chatHistory.length - 5].message}"
 `
 
-const COHERE_API_KEY = "COHERE-API-KEY-HERE"
+const COHERE_API_KEY = "DwXsmOfI0slma6EOancUvig7tATOYiqBdSfwpbSr"
 export default async function generateResponse(topic: string, msg: string, chatHistory: ChatMessage[]) {
     const cohere = new CohereClient({
         token: COHERE_API_KEY,
@@ -47,7 +48,7 @@ export default async function generateResponse(topic: string, msg: string, chatH
         const readyStr = await cohere.chat({
             message: ready_message(chatHistory),
             temperature: 0.1,
-            preamble: ready_preamble(topic)
+            preamble: ready_preamble()
         })
 
         ready = readyStr.text == "TRUE"
@@ -69,7 +70,7 @@ export default async function generateResponse(topic: string, msg: string, chatH
 }
 
 
-async function runChat() {
+async function runTextChat() {
     const topic = "Ask me what i want to wear for the day. I like fashion"
     const chatHistory: ChatMessage[] = []
     let user = "Please wake me up."
@@ -112,5 +113,6 @@ async function runChat() {
     rl.close()
 }
 
-
-runChat()
+if (require.main === module) {
+    runTextChat()
+}
