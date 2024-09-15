@@ -1,49 +1,12 @@
-import { useState, useEffect } from "react"
-import Navbar from './components/Navbar.jsx'
+import { useState, useEffect } from "react";
+import Navbar from './components/Navbar.jsx';
 import ClockPage from "./pages/ClockPage.jsx";
-import AlarmsPage from "./pages/AlarmsPage.jsx"
+import AlarmsPage from "./pages/AlarmsPage.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
 
 function App() {
   const [scrollY, setScrollY] = useState({scrollPosnY: 0, clientY: 0, velocity: 0});
   const [activePage, setActivePage] = useState(undefined);
-
-  useEffect(() => {
-    if(!window) return;
-    
-    const handleTouchStart = e => {
-      const touch = e.changedTouches[0];
-
-      setScrollY(prev => {return {...prev, clientY: touch.clientY}})
-    }
-
-    const handleTouchMove = e => {
-      const touch = e.changedTouches[0];
-      
-      const deltaY = scrollY.scrollPosnY - (touch.clientY - scrollY.clientY);
-      window.scrollTo(0, deltaY/2);
-      // const scrollToDeltaY = () => {
-      //   window.requestAnimationFrame(scrollToDeltaY)
-      //   window.scrollTo(0, deltaY);
-      // }
-      // scrollToDeltaY();
-
-      setScrollY(prev => {return {...prev, scrollPosnY: window.scrollY, clientY: touch.clientY, velocity: deltaY}})
-    }
-    const handleTouchEnd = () => {
-      console.log('pointer up')
-      setScrollY(prev => {return {...prev, scrollPosnY: window.scrollY}}) 
-    }
-    
-    window.addEventListener('touchstart', handleTouchStart);
-    window.addEventListener('touchmove', handleTouchMove);
-    window.addEventListener('touchend', handleTouchEnd);
-
-    return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
-    }
-  }, [scrollY]);
 
   return (
     <main
@@ -57,6 +20,7 @@ function App() {
       </div>
       {activePage === 'Clock' && <ClockPage />}
       {activePage === 'Alarm' && <AlarmsPage />}
+      {activePage === 'Settings' && <SettingsPage />}
       {/* {activePage === 'Settings' && <SettingsPage />} */}
     </main>
   )
