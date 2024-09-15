@@ -33,7 +33,7 @@ const ModifyAlarm = ({setAlarms, info, open, setOpen}) => {
 
     const handleSetAlarm = () => {
         var titleTitle = title;
-        if((time[0] > 2 || time[0] < 0) || (time[0] == 2 && time[1] >= 4) || (time[1] < 0) || (time[3] > 5 || time[3] < 0) || (time[4] < 0)) {
+        if((time[0] > 2 || time[0] < 0) || (time[0] == 2 && time[1] >= 4) || (time[1] < 0) || (time[2] > 5 || time[2] < 0) || (time[3] < 0)) {
             console.log('time error'); 
             return;
         }
@@ -48,7 +48,7 @@ const ModifyAlarm = ({setAlarms, info, open, setOpen}) => {
         }
         const dayArr = orderDayArr(days);
 
-        const id = info.id ? info.id : Math.random();
+        const id = (info && info.id) ? info.id : Math.random();
         
         const newAlarm = {title: titleTitle, time: `${time[0]}${time[1]}:${time[2]}${time[3]}`, days: dayArr, prompt: prompt, id: id, enabled: true};
 

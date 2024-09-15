@@ -8,38 +8,41 @@ import SettingsPage from "./pages/SettingsPage.jsx";
 import { ALARM_ARRAY } from "./alarm.js";
 
 function App() {
-  const [activePage, setActivePage] = useState(undefined);
+  const [ alarms, setAlarms ] = useState(ALARM_ARRAY);
+  const [activePage, setActivePage] = useState('Alarm');
   const [alarmActive, setAlarmActive] = useState(false);
 
   const checkAlarm = () => {
     const date = new Date;
 
     const time = `${date.getHours()}:${date.getMinutes()}`;
-    const alarmIndex = ALARM_ARRAY.findIndex(alarm => alarm.time === time);
+    const alarm = alarms.find(alarm => alarm.time === time);
 
-    if(alarmIndex === -1) return 'no alarm';
-    else setAlarmActive(true);
+    if(!alarm || alarm.enabled == false) {
+      // console.log('no alarm')
+      return;
+    } else {
+      setAlarmActive(true)
+    };
   }
 
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     checkAlarm();
-  //   }, 1000);
-  // }, []);
+  useEffect(() => {
+    setInterval(() => {
+      checkAlarm();
+    }, 1000);
+  }, []);
 
   return (
     <main
       className="max-h-full relative h-dvh flex flex-col justify-start items-center p-4 gap-4 bg-[#101010] overflow-hidden"
     >
-      {alarmActive && <AlarmPage />}
+      {alarmActive && <AlarmPage alarmActive={alarmActive} />}
       <div
         className="h-full flex-[0.1] w-full min-h-max" 
       >
         <Navbar activePage={activePage} setActivePage={setActivePage}/>
       </div>
-      {activePage === 'Clock' && <ClockPage />}
-      {activePage === 'Alarm' && <AlarmsPage />}
-      {activePage === 'Settings' && <SettingsPage />}
+        <AlarmsPage activePage={activePage} alarms={alarms} setAlarms={setAlarms} setAlarmActive={setAlarmActive}/>
     </main>
   )
 }

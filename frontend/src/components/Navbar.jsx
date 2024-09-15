@@ -5,7 +5,7 @@ import { useState } from "react";
 const Navbar = ({activePage, setActivePage}) => {
     const [coords, setCoords] = useState({left: 0, width: 0, height: 0})
 
-    const pages = ['Clock', 'Alarm', 'Settings']
+    const pages = ['Alarm', 'Settings']
     return (
         <nav
             className="

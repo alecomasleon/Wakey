@@ -29,7 +29,7 @@ const ClockPage = ({}) => {
 
     return (
         <section
-            className="flex relative flex-col h-full flex-[0.9] w-full justify-center items-center mt-2 bg-white bg-opacity-[0.025] rounded-lg"
+            className="flex relative flex-col h-full flex-[0.9] w-full justify-center items-center mt-2  rounded-lg"
         >
             <div
                 className="

@@ -1,12 +1,29 @@
+import { useEffect } from "react";
 import { FaBell } from "react-icons/fa";
+import { FaPhone } from "react-icons/fa";
 
 
-const AlarmPage = ({}) => {
+
+const AlarmPage = ({alarmActive}) => {
+    const ring = new Audio('../../public/ring.mp3');
+    ring.play();
+
+    useEffect(() => {
+        if(alarmActive === false) {
+            ring.pause();
+        }
+    }, [alarmActive])
+
+    useEffect(() => {
+        setInterval(() => {
+            ring.play();
+        }, 300000);
+    }, []);
 
     return (
         <div
             className="
-                backdrop-blur-md pointer-events-none
+                backdrop-blur-md
                 h-dvh z-50 w-dvw bg-white bg-opacity-5
                 fixed top-0 left-0
                 flex flex-col justify-between items-center
@@ -20,14 +37,15 @@ const AlarmPage = ({}) => {
             </h1>
             <FaBell className="bell text-9xl" />
             <button
+                onClick={() => {console.log('do the cohere thing')}}
                 className="
-                    text-3xl
-                    bg-white px-16 py-4
+                    text-6xl
+                    bg-green-500 text-white p-8
                     shadow-2xl
-                    rounded-full
+                    rounded-full aspect-square
                 "
             >
-                Pick Up
+                <FaPhone/>
             </button>
         </div>
     )
