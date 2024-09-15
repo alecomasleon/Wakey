@@ -105,7 +105,7 @@ async function runTextChat() {
         user = await askQuestion("USER: ")
         chatHistory.push({role: "USER", message: user})
 
-        if (user == 'q') {
+        if (user == 'exit') {
             break
         }
     }

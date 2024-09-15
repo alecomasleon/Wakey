@@ -4,9 +4,12 @@
     "@google-cloud/speech": "^6.7.0",
     "cohere": "^1.1.1",
     "cohere-ai": "^7.13.1",
-    "node-record-lpcm16": "^1.0.1"
+    "node-record-lpcm16": "^1.0.1",
+    "util.promisify": "^1.1.2"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@types/node": "^22.5.5",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",

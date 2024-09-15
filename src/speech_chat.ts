@@ -1,21 +1,11 @@
 import { StreamedChatResponse } from "cohere-ai/api";
 import { Stream } from "cohere-ai/core";
 import generateResponse, { ChatMessage } from "./genai";
-import * as readline from 'readline';
 import { listenWrapper } from "./listen";
 import generateResponseWithSchedule from "./genai_with_schedule";
 
 
-async function listen() {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-    const text = new Promise<string>((resolve) => rl.question("USER: ", resolve))
-    return text
-}
-
-async function speak(stream: Stream<StreamedChatResponse>) {
+async function consoleSpeak(stream: Stream<StreamedChatResponse>) {
     let chatbot = ""
     for await (const chat of stream) {
         if (chat.eventType === "text-generation") {
@@ -27,7 +17,10 @@ async function speak(stream: Stream<StreamedChatResponse>) {
     return chatbot
 }
 
-export default async function runChat(topic: string) {
+export default async function runChat(topic: string, speak: any) {
+    if (!speak) {
+        speak = consoleSpeak
+    }
     const chatHistory: ChatMessage[] = []
     let user = "Please wake me up."
 
@@ -57,5 +50,5 @@ export default async function runChat(topic: string) {
 }
 
 if (require.main === module) {
-    runChat("Ask me what I want to wear for the day. I like fashion")
+    runChat("Ask me what I want to wear for the day. I like fashion", undefined)
 }

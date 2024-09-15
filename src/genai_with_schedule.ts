@@ -1,7 +1,8 @@
 import { CohereClient } from "cohere-ai"
 import { Message } from "cohere-ai/api/types/Message";
 import * as readline from 'readline';
-import { COHERE_API_KEY } from "../.env";
+//import { COHERE_API_KEY } from "../.env";
+const COHERE_API_KEY = "caW2o07hBr3ntgs8hAKRdW8SnJluS15EMFdJTqQ1"
 
 // ideas: add connectors
 // somehow use rerank or classify (maybe to classify awake/sleepy responses)
