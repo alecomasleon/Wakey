@@ -27,17 +27,17 @@ you were having an audio conversation. Keep your language natural.
 
 const ready_preamble = () => `
 You are a system that analyzes whether a user is fully awake in the morning, or if they they are still sleepy.
-Look at the user's most recent messages and if the most of them sound more awake than sleepy, respond with the string: "TRUE".
+Look at the user's most recent messages and if the most of them sound more awake than sleepy or if they are saying goodbye, respond with the string: "TRUE".
 If they don't, respond with the string "FALSE".
 Only ever respond with "TRUE" or "FALSE".
 `
 
 const ready_message = (chatHistory: ChatMessage[]) => `
-Based on the following 3 most recent messages from the user, are they fully awake?
+Based on the following 2 most recent messages from the user, are they fully awake?
 "${chatHistory[chatHistory.length - 1].message}"
 "${chatHistory[chatHistory.length - 3].message}"
-"${chatHistory[chatHistory.length - 5].message}"
 `
+//"${chatHistory[chatHistory.length - 5].message}"
 
 const schedule_preamble = () => `
 You are a system that analyzes a conversation between a user and a chatbot. Your goal is to determine whether any of the user's messages are
@@ -122,7 +122,8 @@ export default async function generateResponseWithSchedule(topic: string, msg: s
     });
 
     let ready = false
-    if (chatHistory.length > 10) {
+    console.log("length: ", chatHistory.length)
+    if (chatHistory.length > 6) {
         const readyStr = await cohere.chat({
             message: ready_message(chatHistory),
             temperature: 0.1,
@@ -134,6 +135,7 @@ export default async function generateResponseWithSchedule(topic: string, msg: s
         if (ready) {
             chatHistory.push({role: "SYSTEM", message: "The user is now fully awake, time to say goodbye."})
         }
+        console.log('Ready: ', ready)
     }
 
     // const aboutScheduleResponse = await cohere.chat({
