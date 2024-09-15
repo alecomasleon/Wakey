@@ -45,7 +45,6 @@ const AlarmPage = ({alarmActive}) => {
         return text
     }
 
-    if (isRinging) {
         return (
             <div
                 className="
@@ -56,32 +55,36 @@ const AlarmPage = ({alarmActive}) => {
                     py-12 px-2
                 "
             >
-                <h1
-                    className="text-8xl text-white font-thin"
-                >
-                    CALL MF
-                </h1>
-                <FaBell className="bell text-9xl" />
-                <button
-                    onClick={() => {
-                        setIsRinging(false)
-                        runChat("I like turtles" /*WE NEED A WAY TO DYNAMICALLY SET THE TOPIC*/, setChatBot, setUser)
-                        console.log('do the cohere thing')
-                    }}
-                    className="
-                        text-6xl
-                        bg-green-500 text-white p-8
-                        shadow-2xl
-                        rounded-full aspect-square
-                    "
-                >
-                    <FaPhone/>
-                </button>
+                {
+                    isRinging ?
+                    <>
+                        <h1
+                            className="text-8xl text-white font-thin"
+                        >
+                            CALL MF
+                        </h1>
+                        <FaBell className="bell text-9xl" />
+                        <button
+                            onClick={() => {
+                                setIsRinging(false)
+                                runChat("I like turtles" /*WE NEED A WAY TO DYNAMICALLY SET THE TOPIC*/, setChatBot, setUser)
+                                console.log('do the cohere thing')
+                            }}
+                            className="
+                                text-6xl
+                                bg-green-500 text-white p-8
+                                shadow-2xl
+                                rounded-full aspect-square
+                            "
+                        >
+                            <FaPhone/>
+                        </button>
+                    </>
+                    :
+                    <CallPage mode={1} chatBotText={chatBotText} userText={userText} />
+                }
             </div>
         )
-    } else {
-        return <CallPage mode={1} chatBotText={chatBotText} userText={userText} />
-    }
 }
 
 export default AlarmPage;
