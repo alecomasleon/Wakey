@@ -181,14 +181,14 @@ async function runChat() {
     while (true) {
         const {stream, ready} = await generateResponseWithSchedule(topic, user, chatHistory)
         let chatbot = ""
-        process.stdout.write("CHATBOT: ")
+        //process.stdout.write("CHATBOT: ")
         for await (const chat of stream) {
             if (chat.eventType === "text-generation") {
                 process.stdout.write(chat.text)
                 chatbot += chat.text
             }
         }
-        process.stdout.write('\n')
+        //process.stdout.write('\n')
         chatHistory.push({role: "CHATBOT", message: chatbot})
 
         if (ready) {
@@ -208,6 +208,6 @@ async function runChat() {
 }
 
 
-if (require.main === module) {
-    runChat()
-}
+// if (require.main === module) {
+//     runChat()
+// }
