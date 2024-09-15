@@ -1,6 +1,7 @@
 import { CohereClient } from "cohere-ai"
 import { Message } from "cohere-ai/api/types/Message";
 import * as readline from 'readline';
+import { COHERE_API_KEY } from "../.env";
 
 // ideas: add connectors
 // somehow use rerank or classify (maybe to classify awake/sleepy responses)
@@ -37,7 +38,6 @@ Based on the following 3 most recent messages from the user, are they fully awak
 "${chatHistory[chatHistory.length - 5].message}"
 `
 
-const COHERE_API_KEY = "DwXsmOfI0slma6EOancUvig7tATOYiqBdSfwpbSr"
 export default async function generateResponse(topic: string, msg: string, chatHistory: ChatMessage[]) {
     const cohere = new CohereClient({
         token: COHERE_API_KEY,

@@ -1,6 +1,7 @@
 import { CohereClient } from "cohere-ai"
 import { Message } from "cohere-ai/api/types/Message";
 import * as readline from 'readline';
+import { COHERE_API_KEY } from "../.env";
 
 // ideas: add connectors
 // somehow use rerank or classify (maybe to classify awake/sleepy responses)
@@ -45,12 +46,28 @@ You will recieve input in a list of the following format:
 [{"role": "USER", "message": string},{"role": "CHATBOT", "message": string},{"role": "USER", "message": string}]
 Where the "role" field defines who the message is from, and the "message" field is the message.
 The last element in the list is the user's last message.
-Using the context of all the messages, determine if in the last message in the list, the user is refering to their schedule or not.
+Using the context of all the messages, determine if the conversation is about the user's schedule.
 If any of the user's messages are about their schedule or what they will do in the day, repond with the string: "TRUE". Otherwise, respond with the string: "FALSE". Only ever respond with "TRUE" or "FALSE".
+`
+
+const schedule_preamble2 = () => `
+You will be presented with a chat conversation between a chatbot and a user.
+Your goal is to determine whether the chatbot needs information about the user's schedule for the day to respond to the user.
+You will recieve input in a list of the following format:
+[{"role": "USER", "message": string},{"role": "CHATBOT", "message": string},{"role": "USER", "message": string}]
+Where the "role" field defines who the message is from, and the "message" field is the message.
+The last element in the list is the user's last message.
+First think about how a chatbot may respond to the user, and if the chatbot would need the user's schedule for the day to respond, you should repond with the string: "TRUE". Otherwise, respond with the string: "FALSE". Only ever respond with "TRUE" or "FALSE".
+The chatbot may need the user schedule for different reasons, such as: the user is asking about something they have today, or the user specifically asks for their schedule
 `
 
 const schedule_message = (chatHistoryStr: string) => `
 Based on the following conversation, are any of the user's messages about their schedule or what they are doing in the day?
+${chatHistoryStr}
+`
+
+const schedule_message2 = (chatHistoryStr: string) => `
+Based on the conversation, does the chatbot need information about the user's schedule for the day to respond to the user?
 ${chatHistoryStr}
 `
 
@@ -99,7 +116,6 @@ function createScheduleDocuments() {
     ]
 }
 
-const COHERE_API_KEY = "DwXsmOfI0slma6EOancUvig7tATOYiqBdSfwpbSr"
 export default async function generateResponse(topic: string, msg: string, chatHistory: ChatMessage[]) {
     const cohere = new CohereClient({
         token: COHERE_API_KEY,
@@ -120,14 +136,16 @@ export default async function generateResponse(topic: string, msg: string, chatH
         }
     }
 
-    // console.log("A:", chatHistory.slice(-4).concat({role: "USER", message: msg}))
-    // console.log("B:", JSON.stringify(chatHistory.slice(-4).concat({role: "USER", message: msg})))
-    // console.log(schedule_message(JSON.stringify(chatHistory.slice(-4).concat({role: "USER", message: msg}))))
-    // const createChatHistoryStr = ""
+    // const aboutScheduleResponse = await cohere.chat({
+    //     message: schedule_message(JSON.stringify(chatHistory.slice(-2).concat({role: "USER", message: msg}))),
+    //     temperature: 0.1,
+    //     preamble: schedule_preamble()
+    // })
+
     const aboutScheduleResponse = await cohere.chat({
-        message: schedule_preamble(),
+        message: schedule_message2(JSON.stringify(chatHistory.slice(-4).concat({role: "USER", message: msg}))),
         temperature: 0.1,
-        preamble: schedule_message(JSON.stringify(chatHistory.slice(-2).concat({role: "USER", message: msg})))
+        preamble: schedule_preamble2(),
     })
 
     console.log("aboutScheduleResponse:", aboutScheduleResponse.text)
@@ -136,7 +154,7 @@ export default async function generateResponse(topic: string, msg: string, chatH
     const stream = await cohere.chatStream({
         message: msg,
         chatHistory: chatHistory,
-        temperature: 0.5,
+        temperature: aboutSchedule ? 0.5: 0.7,
         preamble: chat_preamble(topic),
         documents: aboutSchedule ? createScheduleDocuments() : undefined
     });
@@ -146,7 +164,7 @@ export default async function generateResponse(topic: string, msg: string, chatH
 
 
 async function runChat() {
-    const topic = "Ask me what i want to wear for the day. I like fashion"
+    const topic = "I like to talk about turtles"
     const chatHistory: ChatMessage[] = []
     let user = "Please wake me up."
 
@@ -189,4 +207,6 @@ async function runChat() {
 }
 
 
-runChat()
+if (require.main === module) {
+    runChat()
+}
