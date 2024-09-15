@@ -4,6 +4,7 @@ import {exec, spawn} from 'child_process'
 import { listenWrapper } from "./src/listen.js";
 //import { listenWrapper } from "./src/hi.js"; ///Users/alejandro/VSCodeProjects/Wakey/src/listen.ts
 import { promises as fs } from 'fs';
+import { ElevenLabsClient, play } from "elevenlabs";
 
 const app = express();
 const port = 3001;
@@ -12,16 +13,31 @@ const port = 3001;
 app.use(cors())
 app.use(express.json());
 
-async function handleVoice(chatbot) {
-  console.log('chatbot:', chatbot)
+async function handleVoicePython(chatbot) {
+  console.log('CALLING PYTHON')
   exec(`python3 ./src/speech.py "${chatbot}"`)
 
+  console.log("WAITING")
   while (true) {
     const data = await fs.readFile('res.txt', 'utf8')
     if (data == 'DONE') break
   }
-  console.log('AFTER')
+  console.log('DONE')
   await fs.writeFile('res.txt', 'HELLO', 'utf-8');
+}
+
+async function handleVoiceTS(chatbot) {
+  const elevenlabs = new ElevenLabsClient({
+    apiKey: "sk_da63b4614fe7425f373317605143cf76b63596a8d9cc8f22" // Defaults to process.env.ELEVENLABS_API_KEY
+  })
+  
+  const audio = await elevenlabs.generate({
+    voice: "Sarah",
+    text: chatbot,
+    stream: true
+  });
+  
+  await play(audio);
 }
 
 app.get('/api/listen', async (req, res) => {
@@ -32,9 +48,7 @@ app.get('/api/listen', async (req, res) => {
 });
 
 app.post('/api/speak', async (req, res) => {
-  console.log("req:", req.body)
-  await handleVoice(req.body.data.text)
-  console.log('AT END')
+  await handleVoiceTS(req.body.data.text)
   res.json({})
 })
 
