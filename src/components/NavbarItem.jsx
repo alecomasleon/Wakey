@@ -1,7 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useLayoutEffect } from "react";
 
 const NavbarItem = ({setCoords, setActivePage, item, activePage}) => {
     const ref = useRef(null);
+
+    useLayoutEffect(() => {
+        if(!ref.current) return;
+
+        const domItem = ref.current;
+        const {left, width, height} = domItem.getBoundingClientRect();
+
+        if(activePage === item) setCoords({left: left, width: width, height: height});
+    }, [])
 
     useEffect(() => {
         if(!ref.current) return;
@@ -35,7 +44,7 @@ const NavbarItem = ({setCoords, setActivePage, item, activePage}) => {
                 ${activePage === item ? 'opacity-100' : 'opacity-60'}
             `}
         >
-            {item}
+            {item === 'Settings' ? 'Clock' : item}
         </li>
     )
 }
