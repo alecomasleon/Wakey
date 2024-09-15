@@ -19,7 +19,7 @@ async function consoleSpeak(stream: Stream<StreamedChatResponse>) {
     return chatbot
 }
 
-export default async function runChat(topic: string, setChatBot: any, setUser: any) {
+export default async function runChat(topic: string, setChatBot: any, setUser: any, end: any, setIsChatSpeaking: any) {
     axios.defaults.baseURL = 'http://localhost:3001';
     console.log("HEREEE")
     console.log(setChatBot)
@@ -32,6 +32,7 @@ export default async function runChat(topic: string, setChatBot: any, setUser: a
     while (true) {
         const {stream, ready} = await generateResponseWithSchedule(topic, user, chatHistory)
         //process.stdout.write("CHATBOT: ")
+        setIsChatSpeaking(true)
         const chatbot = await setChatBot(stream)
         await axios.post('/api/speak', {data: {text: chatbot}, headers: {'Access-Control-Allow-Origin' : '*'}})
         console.log("CHATBOT: ", chatbot)
@@ -43,6 +44,7 @@ export default async function runChat(topic: string, setChatBot: any, setUser: a
 
         // process.stdout.write("USER: ")
         console.log("USER: ")
+        setIsChatSpeaking(false)
         user = ''
         while (user == '') {
             const response = await axios.get('/api/listen', {headers: {'Access-Control-Allow-Origin' : '*'}})
@@ -52,12 +54,13 @@ export default async function runChat(topic: string, setChatBot: any, setUser: a
         }
         chatHistory.push({role: "USER", message: user})
 
-        if (user == 'q') {
-            break
-        }
+        // if (true) {
+        //     break
+        // }
     }
 
     console.log("ALL DONE")
+    end()
 }
 
 // if (require.main === module) {

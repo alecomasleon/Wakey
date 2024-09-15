@@ -1,13 +1,11 @@
-// mode = 0 for user talking
-// mode = 1 for chatbot talking
-const CallPage = ({mode, chatBotText, userText}) => {
+const CallPage = ({isChatSpeaking, chatBotText, userText}) => {
     return (
         <>
             <button 
                 type="button"
                 className="bg-white rounded-lg px-4 py-6 flex-[0.8] h-5"
             >
-                {mode ? 'ChatBot speaking' : 'You\'re speaking'}
+                {isChatSpeaking ? 'ChatBot speaking' : 'You\'re speaking'}
             </button>
             <button 
                 type="button"
@@ -19,7 +17,7 @@ const CallPage = ({mode, chatBotText, userText}) => {
                 type="button"
                 className="bg-white rounded-lg px-4 py-6 flex-[0.8] h-5"
             >
-                {mode ? userText : 'Listening...'}
+                {isChatSpeaking ? userText : 'Listening...'}
             </button>
         </>
     )

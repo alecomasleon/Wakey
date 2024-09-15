@@ -37,7 +37,7 @@ function App() {
     <main
       className="max-h-full relative h-dvh flex flex-col justify-start items-center p-4 gap-4 bg-[#101010] overflow-hidden"
     >
-      {alarmActive && <AlarmPage alarmActive={alarmActive} />}
+      {alarmActive && <AlarmPage alarmActive={alarmActive} setAlarmActive={setAlarmActive} />}
       <div
         className="h-full flex-[0.1] w-full min-h-max" 
       >
