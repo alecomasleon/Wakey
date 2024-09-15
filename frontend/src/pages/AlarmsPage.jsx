@@ -1,30 +1,22 @@
 import { useState } from 'react';
 import Alarm from '../components/Alarm.jsx';
-
-const ALARM_ARRAY = [
-    {title: 'wakey', time: '16:30', days: ['Monday', 'Tuesday'], enabled: false},
-    {title: 'wakeywakey', time: '8:24', days: ['Saturday', 'Sunday'], enabled: true},
-    {title: 'WWWWWWWWWWWWW WWW', time: '8:24', days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], enabled: true},
-    {title: 'wakeywakey2', time: '8:24', days: ['Saturday', 'Sunday'], enabled: true},
-    {title: 'wakeywakey3', time: '8:24', days: ['Saturday', 'Sunday'], enabled: true},
-    {title: 'wakeywakey4', time: '8:24', days: ['Saturday', 'Sunday'], enabled: true},
-    {title: 'wakeywakey5', time: '8:24', days: ['Saturday', 'Sunday'], enabled: true},
-    {title: 'wakeywakey6', time: '8:24', days: ['Saturday', 'Sunday'], enabled: true},
-    {title: 'wakeywakey7', time: '8:24', days: ['Saturday', 'Sunday'], enabled: true},
-];
+import { ALARM_ARRAY } from '../alarm.js';
+import ModifyAlarm from './ModifyAlarm.jsx';
+import Drawer from '../components/Drawer.jsx';
+import AlarmWrap from '../components/AlarmWrap.jsx';
 
 const AlarmsPage = ({}) => {
-    const [alarms, setAlarms] = useState(ALARM_ARRAY);
+    const [ open, setOpen ] = useState(false);
+    const [ alarms, setAlarms ] = useState(ALARM_ARRAY);
 
-    const handleToggleActive = (alarm) => {
+    const handleToggleActive = (alarmId) => {
         setAlarms(prev => {
-            const alarmToSetIndex = prev.findIndex(e => e.title === alarm);
-            var alarmToSet = prev[alarmToSetIndex];
-            if(!alarmToSet) {console.log('invalid title'); return;}
-            alarmToSet.enabled = !alarmToSet.enabled;
-
-            const newArr = [...prev].filter(e => e.title !== alarm);
-            newArr.splice(alarmToSetIndex, 0, alarmToSet);
+            const alarmToSetIndex = prev.findIndex(e => e.id === alarmId);
+            // if(alarmToSetIndex === -1) return;
+            var alarmToSet = [...prev][alarmToSetIndex];
+            
+            var newArr = [...prev];
+            newArr[alarmToSetIndex] = {...alarmToSet, enabled: ![...prev][alarmToSetIndex].enabled};
 
             return newArr;
         })
@@ -42,7 +34,7 @@ const AlarmsPage = ({}) => {
                 {
                     alarms.map(a => {
                         return (
-                            <Alarm handleToggleActive={handleToggleActive} info={a} />
+                            <AlarmWrap handleToggleActive={() => handleToggleActive(a.id)} setAlarms={setAlarms} alarms={alarms} info={a} />
                         )
                     })
                 }
@@ -53,8 +45,10 @@ const AlarmsPage = ({}) => {
                     bg-white text-lg 
                     rounded-lg border border-white border-solid
                 "
+                onClick={() => setOpen(true)}
             >
                 +
+                <ModifyAlarm setAlarms={setAlarms} open={open} setOpen={setOpen}/>
             </div>
         </section>
     )

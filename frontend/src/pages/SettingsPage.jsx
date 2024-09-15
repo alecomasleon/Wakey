@@ -3,9 +3,10 @@ const SettingsPage = ({}) => {
     return (
         <button 
             type="button"
-            className="bg-white rounded-lg px-4 py-6 flex-[0.8] h-5"
+            className="bg-white rounded-lg px-4 h-5"
         >
-            PICK UP CALL
+
+                PICK UP CALL
         </button>
     )
 }

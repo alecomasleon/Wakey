@@ -1,17 +1,16 @@
 import SlideButton from "./SlideButton.jsx";
 
-const Alarm = ({info, handleToggleActive}) => {
-
+const Alarm = ({info, handleToggleActive, setOpen}) => {
     const active = info.enabled;
 
     const days = info.days.map((day, index) => {
-        if(day === 'Monday') day = 'Mon';
-        else if(day === 'Tuesday') day = 'Tue';
-        else if(day === 'Wednesday') day = 'Wed';
-        else if(day === 'Thursday') day = 'Thurs';
-        else if(day === 'Friday') day = 'Fri';
-        else if(day === 'Saturday') day = 'Sat';
-        else if(day === 'Sunday') day = 'Sun';
+        // if(day === 'Monday') day = 'Mon';
+        // else if(day === 'Tuesday') day = 'Tue';
+        // else if(day === 'Wednesday') day = 'Wed';
+        // else if(day === 'Thursday') day = 'Thurs';
+        // else if(day === 'Friday') day = 'Fri';
+        // else if(day === 'Saturday') day = 'Sat';
+        // else if(day === 'Sunday') day = 'Sun';
 
         if(info.days[index + 1]) return day + ', ';
         else return day;
@@ -53,17 +52,18 @@ const Alarm = ({info, handleToggleActive}) => {
             </div>
             <div
                 style={{transform: 'translate(-50%, -50%)'}}
-                className="absolute text-white left-[50%] top-[50%] opacity-40 font-thin text-2xl"
+                className="absolute text-white left-[50%] top-[50%] opacity-40 font-thin text-2xl w-full h-full flex justify-center items-center z-10"
+                onClick={() => setOpen(true)}
             >
                 +
             </div>
             <div
                 className="
-                    flex-[0.4] w-full h-full
+                    flex-[0.4] w-full h-full z-20
                     flex flex-col items-end justify-center
                 "
             >
-                <SlideButton onClick={() => handleToggleActive(info.title)} active={info.enabled}/>
+                <SlideButton onClick={handleToggleActive} active={info.enabled}/>
             </div>
         </li>
     )
