@@ -76,10 +76,10 @@ const ModifyAlarm = ({setAlarms, info, open, setOpen}) => {
 
     return (
         <>
-            <Drawer open={open} handleCloseDrawer={handleCloseDrawer} className={"flex flex-col gap-8"}>
+            <Drawer open={open} handleCloseDrawer={handleCloseDrawer} className={"flex flex-col gap-4"}>
                 <HourPicker time={time} setTime={setTime} />
                 <div
-                    className="flex flex-row w-full gap-2"
+                    className="flex flex-row w-full gap-2 mb-6"
                 >
                     <SelectDay day='Mon' days={days} handlePickDay={handlePickDay}/>
                     <SelectDay day='Tue'days={days} handlePickDay={handlePickDay}/>
@@ -93,7 +93,7 @@ const ModifyAlarm = ({setAlarms, info, open, setOpen}) => {
                     onChange={e => setTitle(e.target.value)}
                     value={title}
                     type="text"
-                    placeholder="Alarm"
+                    placeholder="Alarm Name"
                     className="
                         placeholder:opacity-60
                         w-full p-2
@@ -102,7 +102,7 @@ const ModifyAlarm = ({setAlarms, info, open, setOpen}) => {
                         border border-solid border-white border-opacity-10 rounded-lg
                         focus:bg-opacity-5 focus:border-opacity-20
                         outline-none
-                        text-white text-2xl font-thin
+                        text-white text-xl font-thin
                         transition-all duration-200 ease-in-out
                     "
                 />
@@ -124,7 +124,7 @@ const ModifyAlarm = ({setAlarms, info, open, setOpen}) => {
                         resize-none
                     "
                 />
-                <button type="button" onClick={handleSetAlarm}>YOO</button>
+                <button type="button" className="px-4 py-2 rounded-lg bg-white text-lg" onClick={handleSetAlarm}>Done</button>
             </Drawer>
         </>
     )

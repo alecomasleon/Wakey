@@ -58,7 +58,7 @@ const AlarmsPage = ({alarms, setAlarms, setAlarmActive, activePage}) => {
                         bg-white text-lg 
                         rounded-lg border border-white border-solid
                     "
-                    onClick={() => setAlarmActive(true)}
+                    onClick={() => setAlarmActive(prev => {return {...prev, bool: true}})}
                 >
                     Alarm Demo
                 </div>

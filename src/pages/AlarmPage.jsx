@@ -8,7 +8,7 @@ import runChat from '../speech_chat.ts'
 
 const AlarmPage = ({alarmActive, setAlarmActive}) => {
     const [isRinging, setIsRinging] = useState(true)
-    const ring = new Audio('../../public/ring.mp3');
+    const ring = new Audio('ring.mp3');
     ring.play();
 
     useEffect(() => {
@@ -70,8 +70,10 @@ const AlarmPage = ({alarmActive, setAlarmActive}) => {
                     <FaBell className="bell text-9xl" />
                     <button
                         onClick={() => {
+                            var prompt = "talk to me about turtles";
+                            if(alarmActive.alarm) prompt = alarmActive.alarm.prompt;
                             setIsRinging(false)
-                            runChat(alarmActive.alarm.prompt /*WE NEED A WAY TO DYNAMICALLY SET THE TOPIC*/, setChatBot, setUser, end, setIsChatSpeaking)
+                            runChat(prompt, setChatBot, setUser, end, setIsChatSpeaking)
                             console.log('do the cohere thing')
                         }}
                         className="

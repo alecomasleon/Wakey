@@ -14,8 +14,12 @@ function App() {
 
   const checkAlarm = () => {
     const date = new Date;
+    var minutes = date.getMinutes().toString();
+    minutes = minutes.length === 1 ? `0${minutes}` : minutes;
+    var hours = date.getHours().toString();
+    hours = hours.length === 1 ? `0${hours}` : hours;
 
-    const time = `0${date.getHours()}:${date.getMinutes()}`;
+    const time = `${hours}:${minutes}`;
     const alarm = alarms.find(alarm => alarm.time === time);
 
     if(!alarm || alarm.enabled == false) {
