@@ -2,6 +2,8 @@ import { StreamedChatResponse } from "cohere-ai/api";
 import { Stream } from "cohere-ai/core";
 import generateResponse, { ChatMessage } from "./genai";
 import * as readline from 'readline';
+import { listenWrapper } from "./listen";
+import generateResponseWithSchedule from "./genai_with_schedule";
 
 
 async function listen() {
@@ -30,7 +32,7 @@ export default async function runChat(topic: string) {
     let user = "Please wake me up."
 
     while (true) {
-        const {stream, ready} = await generateResponse(topic, user, chatHistory)
+        const {stream, ready} = await generateResponseWithSchedule(topic, user, chatHistory)
         process.stdout.write("CHATBOT: ")
         const chatbot = await speak(stream)
         chatHistory.push({role: "CHATBOT", message: chatbot})
@@ -39,13 +41,19 @@ export default async function runChat(topic: string) {
             break // here we also want to end 
         }
 
-        user = await listen()
+        process.stdout.write("USER: ")
+        user = ''
+        while (user == '') {
+            user = await listenWrapper()
+        }
         chatHistory.push({role: "USER", message: user})
 
         if (user == 'q') {
             break
         }
     }
+
+    console.log("ALL DONE")
 }
 
 if (require.main === module) {

@@ -116,7 +116,7 @@ function createScheduleDocuments() {
     ]
 }
 
-export default async function generateResponse(topic: string, msg: string, chatHistory: ChatMessage[]) {
+export default async function generateResponseWithSchedule(topic: string, msg: string, chatHistory: ChatMessage[]) {
     const cohere = new CohereClient({
         token: COHERE_API_KEY,
     });
@@ -178,7 +178,7 @@ async function runChat() {
     }
 
     while (true) {
-        const {stream, ready} = await generateResponse(topic, user, chatHistory)
+        const {stream, ready} = await generateResponseWithSchedule(topic, user, chatHistory)
         let chatbot = ""
         process.stdout.write("CHATBOT: ")
         for await (const chat of stream) {

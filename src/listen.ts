@@ -5,7 +5,7 @@ import * as recorder from 'node-record-lpcm16';
 
 let finalTranscript = "";
 
-export default async function listen() {
+export default async function listen(): Promise<string> {
   return new Promise((resolve, reject) => {
     const client = new speech.SpeechClient({
       keyFilename: './htnproject-fa322c7140ed.json'
@@ -28,7 +28,11 @@ export default async function listen() {
         // reject(err); // Reject promise on error
       })
       .on('data', (data) => {
-        console.log(`Real time transcript : ${data.results[0]?.alternatives?.[0]?.transcript} [isFinal: ${data.results[0]?.isFinal}]`);
+        //process.stdout.write(data.results[0]?.alternatives?.[0]?.transcript.toString().split(' ').slice(-1)[0] + ' ')
+        // process.stdout.write("USER: " + data.results[0]?.alternatives?.[0]?.transcript);
+        // process.stdout.clearLine(0);
+        // process.stdout.cursorTo(0);
+        console.log("USER: ", data.results[0]?.alternatives?.[0]?.transcript)
 
         if (data.results[0]?.isFinal) {
           // Save the final sentence to the variable
@@ -60,7 +64,7 @@ export default async function listen() {
   });
 }
 
-export async function listenWrapper() {
+export async function listenWrapper(): Promise<string> {
   try {
     const result = await listen();
     // const cohereResult = await callCohere(result)
@@ -69,6 +73,8 @@ export async function listenWrapper() {
   } catch (error) {
     console.error("Error in listenWrapper:", error);
   }
+
+  return "EMPTY"
 }
 
 if (require.main === module) {
