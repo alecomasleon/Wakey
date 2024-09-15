@@ -10,26 +10,27 @@ import { ALARM_ARRAY } from "./alarm.js";
 function App() {
   const [ alarms, setAlarms ] = useState(ALARM_ARRAY);
   const [activePage, setActivePage] = useState('Alarm');
-  const [alarmActive, setAlarmActive] = useState(false);
+  const [alarmActive, setAlarmActive] = useState({bool: false, alarm: undefined});
 
   const checkAlarm = () => {
     const date = new Date;
 
-    const time = `${date.getHours()}:${date.getMinutes()}`;
+    const time = `0${date.getHours()}:${date.getMinutes()}`;
     const alarm = alarms.find(alarm => alarm.time === time);
 
     if(!alarm || alarm.enabled == false) {
-      // console.log('no alarm')
+      console.log('no alarm')
       return;
     } else {
-      setAlarmActive(true)
+      setAlarmActive({bool: true, alarm: alarm})
+      console.log('yipie')
     };
   }
 
   useEffect(() => {
     setInterval(() => {
       checkAlarm();
-      console.log(alarms)
+      // console.log(alarms)
     }, 1000);
   }, [alarms]);
 
@@ -37,7 +38,7 @@ function App() {
     <main
       className="max-h-full relative h-dvh flex flex-col justify-start items-center p-4 gap-4 bg-[#101010] overflow-hidden"
     >
-      {alarmActive && <AlarmPage alarmActive={alarmActive} setAlarmActive={setAlarmActive} />}
+      {alarmActive.bool && <AlarmPage alarmActive={alarmActive} setAlarmActive={setAlarmActive} />}
       <div
         className="h-full flex-[0.1] w-full min-h-max" 
       >

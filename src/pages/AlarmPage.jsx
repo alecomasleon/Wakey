@@ -12,7 +12,7 @@ const AlarmPage = ({alarmActive, setAlarmActive}) => {
     ring.play();
 
     useEffect(() => {
-        if(alarmActive === false) {
+        if(alarmActive.bool === false) {
             ring.pause();
         }
     }, [alarmActive])
@@ -46,7 +46,7 @@ const AlarmPage = ({alarmActive, setAlarmActive}) => {
     }
 
     const end = () => {
-        setAlarmActive(false)
+        setAlarmActive(prev => {return {...prev, bool: false}})
     }
 
     return (
@@ -71,7 +71,7 @@ const AlarmPage = ({alarmActive, setAlarmActive}) => {
                     <button
                         onClick={() => {
                             setIsRinging(false)
-                            runChat("I like turtles" /*WE NEED A WAY TO DYNAMICALLY SET THE TOPIC*/, setChatBot, setUser, end, setIsChatSpeaking)
+                            runChat(alarmActive.alarm.prompt /*WE NEED A WAY TO DYNAMICALLY SET THE TOPIC*/, setChatBot, setUser, end, setIsChatSpeaking)
                             console.log('do the cohere thing')
                         }}
                         className="
