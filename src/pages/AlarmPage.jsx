@@ -7,23 +7,22 @@ import runChat from '../speech_chat.ts'
 import sound from '../public/ring.mp3'
 
 
+const ring = new Audio(sound);
+ring.currentTime = 2.9;
 const AlarmPage = ({alarmActive, setAlarmActive}) => {
     const [isRinging, setIsRinging] = useState(true)
-    const ring = new Audio(sound);
-    ring.currentTime = 3;
-    ring.play();
 
     useEffect(() => {
-        if(alarmActive.bool === false) {
-            ring.pause();
+        if(!isRinging) {
+            ring.pause()
         }
-    }, [alarmActive])
+    }, [isRinging])
 
     useEffect(() => {
-        setInterval(() => {
+        if (isRinging && ring) {
             ring.play();
-        }, 308000);
-    }, []);
+        }
+    }, [isRinging]);
 
 
     const [chatBotText, setChatBotText] = useState('')
@@ -75,6 +74,7 @@ const AlarmPage = ({alarmActive, setAlarmActive}) => {
                             var prompt = "talk to me about turtles";
                             if(alarmActive.alarm) prompt = alarmActive.alarm.prompt;
                             setIsRinging(false)
+                            ring.pause()
                             runChat(prompt, setChatBot, setUser, end, setIsChatSpeaking)
                             console.log('do the cohere thing')
                         }}
