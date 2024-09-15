@@ -13,7 +13,7 @@ const CallPage = ({isChatSpeaking, chatBotText, userText}) => {
                 type="button"
                 className={` flex flex-col justify-center items-center rounded-lg px-4 py-6 flex-[0.1] w-full h-full text text-base  font-light expandAnimation ${isChatSpeaking ? 'text-green-100 bg-green-600' : 'text-sky-100 bg-sky-600'} transition-all ease-in-out duration-500`}
             >
-                {isChatSpeaking ? 'ChatBot Speaking' : 'You\'re Speaking'}
+                {isChatSpeaking ? 'Wakey Speaking' : 'You\'re Speaking'}
             </button>
             <button 
                 type="button"
@@ -27,7 +27,7 @@ const CallPage = ({isChatSpeaking, chatBotText, userText}) => {
                 type="button"
                 className={`bg-sky-50 flex relative flex-col items-center rounded-lg px-4 py-6 flex-[0.3] w-full h-full justify-center font-extralight text-xl text-sky-600 tracking-wide transition-all ease-in-out duration-500 ${!isChatSpeaking ? 'flex-[0.7]' : 'flex-[0.2]'}`}
             >
-                {isChatSpeaking ? <div class="dot-flashing"></div> : userText}
+                {!isChatSpeaking ? <div class="dot-flashing"></div> : userText}
                 <div className={`text-4xl ${isChatSpeaking ? 'bg-sky-100 text-sky-950' : 'bg-sky-50 text-sky-600'} rounded-full aspect-square -bottom-4 absolute transition-all ease-in-out duration-500`}>
                     {isChatSpeaking ? <CiMicrophoneOff/> : <CiMicrophoneOn/>}
                 </div>

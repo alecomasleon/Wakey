@@ -64,9 +64,9 @@ const AlarmPage = ({alarmActive, setAlarmActive}) => {
                 isRinging ?
                 <>
                     <h1
-                        className="text-8xl text-white font-thin"
+                        className="text-8xl text-white font-thin w-full text-center"
                     >
-                        CALL MF
+                        WAKEY WAKEY
                     </h1>
                     <FaBell className="bell text-9xl" />
                     <button
