@@ -4,11 +4,13 @@ import { FaPhone } from "react-icons/fa";
 import CallPage from "./CallPage";
 import { useState } from "react"
 import runChat from '../speech_chat.ts'
+import sound from '../public/ring.mp3'
 
 
 const AlarmPage = ({alarmActive, setAlarmActive}) => {
     const [isRinging, setIsRinging] = useState(true)
-    const ring = new Audio('ring.mp3');
+    const ring = new Audio(sound);
+    ring.currentTime = 3;
     ring.play();
 
     useEffect(() => {
@@ -20,7 +22,7 @@ const AlarmPage = ({alarmActive, setAlarmActive}) => {
     useEffect(() => {
         setInterval(() => {
             ring.play();
-        }, 300000);
+        }, 308000);
     }, []);
 
 
