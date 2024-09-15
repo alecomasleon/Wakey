@@ -29,8 +29,9 @@ function App() {
   useEffect(() => {
     setInterval(() => {
       checkAlarm();
+      console.log(alarms)
     }, 1000);
-  }, []);
+  }, [alarms]);
 
   return (
     <main
