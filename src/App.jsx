@@ -23,11 +23,11 @@ function App() {
     const alarm = alarms.find(alarm => alarm.time === time);
 
     if(!alarm || alarm.enabled == false) {
-      console.log('no alarm')
+      //console.log('no alarm')
       return;
     } else {
       setAlarmActive({bool: true, alarm: alarm})
-      console.log('yipie')
+      //console.log('yipie')
     };
   }
 
