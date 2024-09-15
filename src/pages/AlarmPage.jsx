@@ -54,11 +54,11 @@ const AlarmPage = ({alarmActive, setAlarmActive}) => {
     return (
         <div
             className="
-                backdrop-blur-md
-                h-dvh z-50 w-dvw bg-white bg-opacity-5
+                backdrop-blur-lg
+                h-dvh z-50 w-dvw bg-black bg-opacity-60
                 fixed top-0 left-0
                 flex flex-col justify-between items-center
-                py-12 px-2
+                py-12 px-6
             "
         >
             {
