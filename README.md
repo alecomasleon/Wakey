@@ -35,7 +35,7 @@ We’re excited to keep improving Wakey by enhancing personalization features, r
 Check out our demo video here: [Wakey Demo](https://youtu.be/4IO9Fpi7GPs)
 
 ## To start:
-'''
+```
 node express.js
 npm run dev
-'''
+```
